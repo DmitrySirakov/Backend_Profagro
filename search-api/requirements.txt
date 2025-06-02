@@ -1,0 +1,16 @@
+pydantic
+pydantic-settings
+fastapi
+uvicorn
+gunicorn
+boto3
+botocore
+langgraph
+openai==1.58.1
+opensearch-py==2.7.1
+langchain-gigachat==0.3.4
+langchain-openai==0.3.6
+langchain-milvus==0.1.8
+langchain-huggingface==0.1.2
+langgraph==0.2.74
+langchain-community==0.3.18

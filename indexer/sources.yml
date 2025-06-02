@@ -1,0 +1,19 @@
+profagro:
+  files:
+  - ""
+  reg_exp: ".*\\.json$"
+  recursive: true
+  base_index_name: "profagro"
+  milvus_db_name: "profagro"
+  separators:
+  - "\r\n\r\n"
+  - "\n\n"
+  - "\n"
+  - " "
+  - ""
+  chunk_size: 1000
+  chunk_overlap: 250
+  company_support:
+  - "amazone"
+  - "kverneland"
+  

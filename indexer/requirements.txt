@@ -1,0 +1,12 @@
+boto3
+botocore
+PyYAML
+opensearch-py==2.7.1
+gigachain==0.2.16
+gigachain-community==0.2.16.post3
+gigachain-core==0.2.38.post2
+gigachain-huggingface==0.0.3
+gigachain-milvus==0.1.4
+gigachain-text-splitters==0.2.4
+prefect==2.20.10
+pydantic_settings
