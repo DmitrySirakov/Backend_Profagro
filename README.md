@@ -13,7 +13,7 @@
 ![PyYAML](https://img.shields.io/badge/-PyYAML-090909?style=for-the-badge&logo=pyyaml)
 ![pydantic](https://img.shields.io/badge/-pydantic-090909?style=for-the-badge&logo=pydantic)
 
-[Документация проекта на DeepWiki](https://deepwiki.com/DmitrySirakov/ML_Profagro)
+[Документация проекта на DeepWiki](https://deepwiki.com/DmitrySirakov/Backend_Profagro)
 
 ## Описание
 
