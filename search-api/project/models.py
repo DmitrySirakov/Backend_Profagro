@@ -1,4 +1,4 @@
-from pydantic import BaseModel, constr
+from pydantic import BaseModel
 from typing import Literal, List
 
 
@@ -16,3 +16,12 @@ class ChatMessage(BaseModel):
 class AgentRequest(BaseModel):
     chat_history: List[ChatMessage]
     company: str
+
+
+class QueryExpansionRequest(BaseModel):
+    chat_history: List[ChatMessage]
+    company: str
+
+
+class QueryExpansionResponse(BaseModel):
+    expanded_questions: List[str]

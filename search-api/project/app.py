@@ -1,7 +1,5 @@
 import logging
 import uvicorn
-from typing import List
-import asyncio
 
 from contextlib import asynccontextmanager
 from typing import Dict
@@ -10,7 +8,6 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 import openai
 import json
-import httpx
 import uuid
 from langchain_core.runnables.base import RunnableSequence
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -28,14 +25,16 @@ from langgraph.prebuilt import create_react_agent
 from project.utils.models import RAGModels, KServeEmbeddings, KServeCrossEncoder
 from project.utils.retrievers import OpenSearchBM25Retriever
 from project.utils.runnables import RerankerRunnable
-from project.models import SearchRequest, AgentRequest
-from project.settings import _settings
+from project.models import (
+    SearchRequest,
+    AgentRequest,
+    QueryExpansionRequest,
+    QueryExpansionResponse,
+)
+from project.settings import _settings, load_yaml_prompt
 from project.utils.agent import RequestToRAG, map_name_func_to_func, RequestToRAGTool
 from project.utils.utils import format_message_for_logging
 from project.models import ChatMessage
-import os
-import boto3
-from botocore.client import Config
 
 logging.basicConfig(
     level=logging.INFO,
@@ -200,7 +199,6 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
-# TODO: убрать нахуй после тестирования фронта
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # or ["*"] for development
@@ -453,6 +451,30 @@ async def agent_gigachat(request: AgentRequest) -> StreamingResponse:
                 logging.error(f"Ошибка при завершении стрима: {e}")
 
     return StreamingResponse(generate(), media_type="text/event-stream")
+
+
+@api_router.post("/query_expansion", response_model=QueryExpansionResponse)
+async def query_expansion(request: QueryExpansionRequest) -> QueryExpansionResponse:
+    messages = [
+        {
+            "role": "system",
+            "content": load_yaml_prompt(
+                "./project/system_prompt.yaml", "query_expansion_agro_prompt_v1"
+            ),
+        }
+    ]
+    for msg in request.chat_history:
+        messages.append({"role": msg.role, "content": msg.content})
+
+    client = openai.OpenAI(api_key=_settings.openai_key, base_url=_settings.proxy_url)
+    completion = client.chat.completions.create(
+        model=_settings.openai_agent_model,
+        messages=messages,
+        temperature=0.2,
+    )
+    raw = completion.choices[0].message.content.strip()
+    expanded_questions = [q.strip() for q in raw.split("\n") if q.strip()]
+    return QueryExpansionResponse(expanded_questions=expanded_questions)
 
 
 app.include_router(api_router, prefix="/api")
