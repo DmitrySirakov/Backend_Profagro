@@ -13,6 +13,8 @@
 ![PyYAML](https://img.shields.io/badge/-PyYAML-090909?style=for-the-badge&logo=pyyaml)
 ![pydantic](https://img.shields.io/badge/-pydantic-090909?style=for-the-badge&logo=pydantic)
 
+[Документация проекта на DeepWiki](https://deepwiki.com/DmitrySirakov/ML_Profagro)
+
 ## Описание
 
 Backend реализует промышленный пайплайн для автоматизации калибровки центробежных разбрасывателей удобрений на базе Retrieval-Augmented Generation. Сервисы обеспечивают индексацию, гибридный поиск, генерацию ответов и интеграцию с LLM, а также оркестрацию всех этапов обработки данных.
